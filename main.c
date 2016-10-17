@@ -8,7 +8,7 @@
  * File:   main.c
  * Author: vinicius
  *
- * Created on October 15, 2016, 1:55 PM
+ * Created on October 01, 2016, 4:20 AM
  */
 
 #include "Sudoku.h"
@@ -17,21 +17,38 @@
  * 
  */
 int main(int argc, char** argv) {
-    
-   
+
+    int arq = 1;
+    char nomeArquivo[30];
     Sudoku sudoku;
-    
-    preencheTabuleiro(&sudoku);
-    printf("Tabuleiro Inicial:\n");
-    imprimeTabuleiro(sudoku);
-    
-    if(resolveSudoku(&sudoku)){
-        printf("Resolvido !\n");
+
+    while (arq) {
+        
+        printf("Digite o nome do arquivo: ");
+        scanf("%s",nomeArquivo);
+        getchar();
+        
+        preencheTabuleiro(&sudoku, nomeArquivo);
+        printf("Tabuleiro Inicial:\n");
         imprimeTabuleiro(sudoku);
+
+        if (resolveSudoku(&sudoku)) {
+            printf("Resolvido !\n");
+            imprimeTabuleiro(sudoku);
+            printf("Foram feitas %d tentativas\n",sudoku.nTentativas);
+        } else
+            printf("O tabuleiro nao possui solucao !\n");
+        
+        printf("Deseja carregar um novo tabuleiro ?\n0- Nao | 1- Sim\n");
+        scanf("%d",&arq);
+        
+        if(arq == 1){
+            zeraTabuleiro(&sudoku);
+            getchar();
+        }
     }
-    else
-        printf("O tabuleiro nao possui solucao !\n");
-   
+
+
     return (EXIT_SUCCESS);
 }
 
