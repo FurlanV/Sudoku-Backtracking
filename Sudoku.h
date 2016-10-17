@@ -8,7 +8,7 @@
  * File:   Sudoku.h
  * Author: vinicius
  *
- * Created on October 15, 2016, 1:56 PM
+ * Created on October 01, 2016, 4:20 AM
  */
 
 #include <stdlib.h>
@@ -24,11 +24,13 @@ extern "C" {
 
     typedef struct {
         int tabuleiro[9][9];
+        int nTentativas;
     } Sudoku;
 
     int procuraPosicaoVazia(Sudoku sudoku, int *linha, int *coluna) ;
-    void preencheTabuleiro(Sudoku *sudoku);
+    void preencheTabuleiro(Sudoku *sudoku, char *nomeArquivo);
     void imprimeTabuleiro(Sudoku sudoku);
+    void zeraTabuleiro(Sudoku *sudoku);
     int resolveSudoku(Sudoku *sudoku);
 
 #ifdef __cplusplus
