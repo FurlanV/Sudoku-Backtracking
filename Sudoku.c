@@ -1,42 +1,45 @@
 #include "Sudoku.h"
 
-void preencheTabuleiro(Sudoku *sudoku) //constroi o tabuleiro 9x9 apartir de um arquivo
+void preencheTabuleiro(Sudoku *sudoku,char *nomeArquivo) //constroi o tabuleiro 9x9 apartir de um arquivo
 {
     int i = 0;
     int j = 0;
-    char n[1];
+    int n;
     FILE *file;
 
-    file = fopen("sudoku.txt", "r");
-
+    file = fopen(nomeArquivo, "r");
+    
     if (file) {
+        sudoku->nTentativas = 0;
         while (!feof(file)) {
+            
+            fscanf(file, "%d ", &n);
+          
+            if (n != '.' && n != ' ') {
+                sudoku->tabuleiro[i][j] = n;
 
-            fscanf(file, "%c ", n);
-
-            if (isdigit(*n)) {
-                sudoku->tabuleiro[i][j] = atoi(n);
-
-                if (j < 8) //0 - 8
+                if (j >= 0 && j < 8) //0 - 8
                     j++;
                 else if (j == 8) {
                     i++;
                     j = 0;
                 }
 
-            } else {
-                sudoku->tabuleiro[i][j] = 0;
-                if (j < 8)
-                    j++;
-                else if (j == 8) {
-                    i++;
-                    j = 0;
-                }
-            }
+            } 
         }
     } else {
         printf("Não foi possivel encontrar o arquivo\n");
         return;
+    }
+}
+
+void zeraTabuleiro(Sudoku *sudoku){
+    int i,j;
+    
+    for(i=0;i<9;i++){
+        for(j=0;j<9;j++){
+            sudoku->tabuleiro[i][j] = 0;
+        }
     }
 }
 
@@ -126,7 +129,7 @@ int resolveSudoku(Sudoku *sudoku) {
     
     for (i = 1; i <= 9; i++) {
         if (isPosicaoSegura(sudoku, linhaVazia, colunaVazia, i)) {
-
+            sudoku->nTentativas++;
             sudoku->tabuleiro[linhaVazia][colunaVazia] = i;
 
             if (resolveSudoku(sudoku))
